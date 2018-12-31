@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shehab.movieinfo.R;
+import com.example.shehab.movieinfo.model.Profile;
 import com.example.shehab.movieinfo.model.Result;
 import com.example.shehab.movieinfo.utils.ImageLoaderUtility;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,20 +29,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PopularActorsAdapter extends RecyclerView.Adapter<PopularActorsAdapter.ViewHolder> {
+public class PopularActorsImagesAdapter extends RecyclerView.Adapter<PopularActorsImagesAdapter.ViewHolder> {
 
-    private OnItemClickListener mListener;
-    private String baseImageUrl="http://image.tmdb.org/t/p/w342/";
+    private String baseImageUrl = "http://image.tmdb.org/t/p/w342/";
 
 
     private Context mContext;
-    ArrayList<Result> popularActorsList;
+    ArrayList<Profile> popularActorsImagesList;
     int width;
     int height;
 
-    public PopularActorsAdapter(Context mContext, ArrayList<Result> popularActorsList) {
+    public PopularActorsImagesAdapter(Context mContext, ArrayList<Profile> popularActorsImagesList) {
         this.mContext = mContext;
-        this.popularActorsList = popularActorsList;
+        this.popularActorsImagesList = popularActorsImagesList;
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         Display display = null;
         if (wm != null) {
@@ -69,7 +70,7 @@ public class PopularActorsAdapter extends RecyclerView.Adapter<PopularActorsAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageLoader.getInstance().displayImage(baseImageUrl+popularActorsList.get(position).getProfilePath(), holder.categoryImage, ImageLoaderUtility.getDisplayImageOptions(), new ImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(baseImageUrl + popularActorsImagesList.get(position).getFilePath(), holder.categoryImage, ImageLoaderUtility.getDisplayImageOptions(), new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 holder.progressBar.setVisibility(View.VISIBLE);
@@ -90,15 +91,15 @@ public class PopularActorsAdapter extends RecyclerView.Adapter<PopularActorsAdap
 
             }
         });
-        holder.categoryText.setText(popularActorsList.get(position).getName());
+
     }
 
     @Override
     public int getItemCount() {
-        return popularActorsList.size();
+        return popularActorsImagesList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_category)
         ImageView categoryImage;
         @BindView(R.id.tv_category)
@@ -107,10 +108,14 @@ public class PopularActorsAdapter extends RecyclerView.Adapter<PopularActorsAdap
         ProgressBar progressBar;
         @BindView(R.id.imageContainer)
         FrameLayout imageContainer;
+        @BindView(R.id.llMaskImage)
+        LinearLayout llMaskImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            llMaskImage.setVisibility(View.GONE);
+            categoryText.setVisibility(View.GONE);
             if (width == 1080 && height >= 2094) {
                 imageContainer.getLayoutParams().width = adjustWithDP(200, mContext);
                 imageContainer.getLayoutParams().height = adjustWithDP(200, mContext);
@@ -149,28 +154,11 @@ public class PopularActorsAdapter extends RecyclerView.Adapter<PopularActorsAdap
                 }
             }
 
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            if (mListener != null) {
-                mListener.onItemClick(popularActorsList.get(getAdapterPosition()).getId(),
-                        popularActorsList.get(getAdapterPosition()).getName(),
-                        baseImageUrl+popularActorsList.get(getAdapterPosition()).getProfilePath(),
-                        popularActorsList.get(getAdapterPosition()).getPopularity()
-                );
-            }
-        }
+
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int popularActorId,String name,String image,float popularity);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener mListener) {
-        this.mListener = mListener;
-    }
 
     public static int adjustWithDP(float value, Context mContext) {
         return (int) (value * mContext.getResources().getDisplayMetrics().density + 0.5f);

@@ -19,14 +19,16 @@
         android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@+id/llMaskImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:background="@drawable/mask_image"/>
     </FrameLayout>
         <TextView
             android:gravity="center"
             android:layout_centerInParent="true"
-            android:text="Activities"
+            android:text=""
             android:id="@+id/tv_category"
             android:textSize="15sp"
             android:textColor="@color/white"

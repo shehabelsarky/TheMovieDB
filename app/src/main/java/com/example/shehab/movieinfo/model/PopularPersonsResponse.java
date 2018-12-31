@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 public class PopularPersonsResponse implements Serializable
 {
 
+    @SerializedName("profiles")
+    @Expose
+    private List<Profile> profiles = null;
     @SerializedName("page")
     @Expose
     private int page;
@@ -53,6 +56,14 @@ public class PopularPersonsResponse implements Serializable
 
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
     }
 
 }

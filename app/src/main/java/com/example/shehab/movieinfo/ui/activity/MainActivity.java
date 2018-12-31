@@ -1,5 +1,6 @@
 package com.example.shehab.movieinfo.ui.activity;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +23,8 @@ import com.example.shehab.movieinfo.model.PopularPersonsResponse;
 import com.example.shehab.movieinfo.model.Result;
 import com.example.shehab.movieinfo.network.ApiManager;
 import com.example.shehab.movieinfo.network.ResponseListener;
+import com.example.shehab.movieinfo.ui.fragments.PopularActorDetailsFragment;
+import com.example.shehab.movieinfo.ui.fragments.PopularActorsFragment;
 import com.example.shehab.movieinfo.utils.EndlessRecyclerViewScrollListener;
 import com.example.shehab.movieinfo.utils.NetworkingUtils;
 
@@ -37,21 +40,9 @@ import dmax.dialog.SpotsDialog;
 
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements ResponseListener, PopularActorsAdapter.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements PopularActorsFragment.OnPopularActorsFragmentInteractionListener
+,PopularActorDetailsFragment.OnPopularActorDetailsFragmentInteractionListener {
 
-//    public static String url = "https://api.themoviedb.org/3/person/popular?api_key=aede46592fa18e618a51016ae6036c11";
-
-    @BindView(R.id.main_recyclerview)
-    RecyclerView rvPopularActors;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    PopularActorsAdapter adapter;
-    android.app.AlertDialog dialog;
-    int pageNo = 1;
-    ArrayList<Result> popularActorsList = new ArrayList<>();
-    private EndlessRecyclerViewScrollListener scrollListener;
-    int totalPages = 0;
-    boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,77 +50,21 @@ public class MainActivity extends AppCompatActivity implements ResponseListener,
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AppSharedPrefs.saveStringPrefs(PrefsConstant.API_KEY, "aede46592fa18e618a51016ae6036c11");
-        initViews();
-    }
 
-    private void initViews() {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle("Actors");
-
-        rvPopularActors.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        rvPopularActors.setLayoutManager(gridLayoutManager);
-        adapter = new PopularActorsAdapter(this, popularActorsList);
-        adapter.setOnItemClickListener(this);
-        rvPopularActors.setAdapter(adapter);
-
-        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                flag = true;
-                progressBar.setVisibility(View.VISIBLE);
-                pageNo++;
-                if (pageNo <= totalPages)
-                    callPopularPersonsApi();
-
-            }
-        };
-        rvPopularActors.addOnScrollListener(scrollListener);
-
-        callPopularPersonsApi();
-    }
-
-
-    private void callPopularPersonsApi() {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setTheme(R.style.CustomSpotDialog)
-                .setCancelable(false)
-                .build();
-
-        if (NetworkingUtils.isNetworkConnected()) {
-            if (!flag)
-            dialog.show();
-            ApiManager.getInstance(this).popularPersons(AppSharedPrefs.getStringVal(PrefsConstant.API_KEY), pageNo, this);
-        } else {
-            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onSuccess(Response response) {
-        dialog.dismiss();
-        progressBar.setVisibility(View.INVISIBLE);
-        PopularPersonsResponse popularPersonsResponse = (PopularPersonsResponse) response.body();
-        if (popularPersonsResponse != null) {
-            popularActorsList.addAll(popularPersonsResponse.getResults());
-            totalPages = popularPersonsResponse.getTotalPages();
-            adapter.notifyDataSetChanged();
-
-        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, PopularActorsFragment.newInstance()).commit();
     }
 
 
     @Override
-    public void onFailure() {
-        dialog.dismiss();
-        progressBar.setVisibility(View.INVISIBLE);
-        Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+    public void onPopularActorsFragmentInteraction(int id,String name,String image,float popularity) {
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container,
+                PopularActorDetailsFragment.newInstance(id,name,image,popularity)).commit();
     }
 
     @Override
-    public void onItemClick(View view, int adapterPosition) {
-        Toast.makeText(this, "Item is clicked", Toast.LENGTH_SHORT).show();
-    }
+    public void onPopularActorDetailsFragmentInteraction() {
 
+    }
 }
