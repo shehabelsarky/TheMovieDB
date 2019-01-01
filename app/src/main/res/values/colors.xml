@@ -10,5 +10,10 @@
     <color name="transparent">#0000</color>
     <color name="white">#ffffffff</color>
     <color name="darkjunglegreen">#202020</color>
+    <color name="munsell">#f3f2f2</color>
+    <color name="taupe">#403330</color>
+    <color name="oldlavender">#737373</color>
+    <color name="ashgrey_1">#aab3bc</color>
+
 
 </resources>

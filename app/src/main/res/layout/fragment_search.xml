@@ -8,11 +8,11 @@
 
 
 
-    <!--<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         >
 
         <LinearLayout
@@ -31,9 +31,9 @@
 
                 android:layout_width="14.0dp"
                 android:layout_height="14.0dp"
-                android:src="@drawable/search_gray"
+                android:src="@drawable/ic_action_search"
                 android:layout_gravity="center_vertical"
-                android:contentDescription="@string/todo" />
+                 />
 
             <EditText
                 android:id="@+id/mSearch"
@@ -56,7 +56,7 @@
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/close"
                 android:visibility="visible"
-                android:src="@drawable/close_black" />
+                android:src="@drawable/iv_close" />
         </LinearLayout>
 
 
@@ -75,15 +75,6 @@
                 android:layout_gravity="center_horizontal"
                 >
 
-                &lt;!&ndash;<ImageView&ndash;&gt;
-                &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
-                &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
-                &lt;!&ndash;android:layout_below="@+id/relativeLayout3"&ndash;&gt;
-                &lt;!&ndash;android:layout_centerHorizontal="true"&ndash;&gt;
-                &lt;!&ndash;android:layout_marginTop="11dp"&ndash;&gt;
-                &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
-                &lt;!&ndash;android:contentDescription="@string/search_icon"&ndash;&gt;
-                &lt;!&ndash;android:src="@drawable/search_icon" />&ndash;&gt;
 
                 <TextView
                     android:id="@+id/tvYourSearchSuggestionOrResult"
@@ -117,20 +108,20 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/myRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
                 android:elevation="2dp"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/searchResultRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
                 android:background="@android:color/transparent"
                 android:elevation="2dp"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
         </LinearLayout>
 
@@ -155,7 +146,7 @@
                     android:id="@+id/ivNoResult"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/search_icon"
+                    android:src="@drawable/ic_action_search"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
@@ -175,7 +166,7 @@
 
 
 
-    </LinearLayout>-->
+    </LinearLayout>
 
 
 

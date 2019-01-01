@@ -148,4 +148,27 @@ public class ApiManager {
         });
 
     }
+
+
+    public void searchPersons(String apiKey,int page,String actorName, ResponseListener responseListener) {
+
+        Call<PopularPersonsResponse> call = networkInterface.searchPersons(apiKey,page,actorName);
+        call.clone().enqueue(new Callback<PopularPersonsResponse>() {
+            @Override
+            public void onResponse(Call<PopularPersonsResponse> call, Response<PopularPersonsResponse> response) {
+
+                if (response.isSuccessful()) {
+                    responseListener.onSuccess(response);
+                } else {
+                    responseListener.onFailure();
+                }
+            }
+            @Override
+            public void onFailure(Call<PopularPersonsResponse> call, Throwable t) {
+                t.printStackTrace();
+                responseListener.onFailure();
+            }
+        });
+
+    }
 }

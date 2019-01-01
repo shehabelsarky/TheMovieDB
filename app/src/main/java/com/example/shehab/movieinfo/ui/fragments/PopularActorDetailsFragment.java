@@ -23,6 +23,8 @@ import com.example.shehab.movieinfo.model.PopularPersonsResponse;
 import com.example.shehab.movieinfo.model.Profile;
 import com.example.shehab.movieinfo.network.ApiManager;
 import com.example.shehab.movieinfo.network.ResponseListener;
+import com.example.shehab.movieinfo.ui.activity.MainActivity;
+import com.example.shehab.movieinfo.ui.activity.SearchActivity;
 import com.example.shehab.movieinfo.utils.Constants;
 import com.example.shehab.movieinfo.utils.EndlessRecyclerViewScrollListener;
 import com.example.shehab.movieinfo.utils.NetworkingUtils;
@@ -151,6 +153,17 @@ public class PopularActorDetailsFragment extends Fragment implements ResponseLis
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() !=null && getActivity() instanceof MainActivity){
+            ((MainActivity) getActivity()).setActionBarTitle(getString(R.string.details));
+
+        }else if (getActivity() !=null && getActivity() instanceof SearchActivity){
+            ((SearchActivity) getActivity()).setActionBarTitle(getString(R.string.details));
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnPopularActorDetailsFragmentInteractionListener) {
@@ -185,7 +198,6 @@ public class PopularActorDetailsFragment extends Fragment implements ResponseLis
 
         }
         if (response.body() instanceof PopularPersonsResponse) {
-//            progressBar.setVisibility(View.INVISIBLE);
             PopularPersonsResponse popularPersonsResponse = (PopularPersonsResponse) response.body();
             if (popularPersonsResponse != null) {
                 popularActorsImagesList.addAll(popularPersonsResponse.getProfiles());
@@ -197,7 +209,6 @@ public class PopularActorDetailsFragment extends Fragment implements ResponseLis
     @Override
     public void onFailure() {
         dialog.dismiss();
-//        progressBar.setVisibility(View.INVISIBLE);
         if (getActivity() != null)
             Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
     }

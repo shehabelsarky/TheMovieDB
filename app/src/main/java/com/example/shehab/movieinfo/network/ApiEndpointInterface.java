@@ -30,4 +30,8 @@ public interface ApiEndpointInterface {
 
     @GET(ApiUrls.POPULAR_ACTOR_DETAILS)
     Call<PopularActorDetails> popularPersonDetails(@Path(value = ApiUrls.POPULAR_PERSON, encoded = true) String personId, @Query("api_key") String apiKey);
+
+
+    @GET(ApiUrls.SEARCH_ACTORS)
+    Call<PopularPersonsResponse> searchPersons(@Query("api_key") String apiKey, @Query("page") int page,@Query("query") String actorName);
 }
